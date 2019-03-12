@@ -13,8 +13,14 @@ services:
       - php
     volumes:
       - ./images/nginx/config:/etc/nginx/conf.d
+  console:
+    build:
+      context: ./images/console
+      dockerfile: Dockerfile
+    volumes_from:
+      - php
+    tty: true
   php:
-    # image: php:7.0-fpm
     build:
       context: ./images/php
       dockerfile: Dockerfile
@@ -29,6 +35,10 @@ services:
         MYSQL_PASSWORD: "123123"
       volumes:
         - db:/var/lib/mysql
+  redis:
+    image: redis:3.2.1
+    ports:
+      - "6379:6379"
 volumes:
   db:
     driver: local
